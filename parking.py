@@ -8,7 +8,6 @@ curr_trucks = 0
 for time in range(1, max(ends) + 1):
     curr_trucks += starts.count(time)
     curr_trucks -= ends.count(time)
-    print("Time", time, ":", curr_trucks, "trucks")
-    price += prices[curr_trucks]
+    price += prices[curr_trucks] * curr_trucks
 
 print(price)
