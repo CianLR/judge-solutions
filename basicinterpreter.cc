@@ -14,11 +14,12 @@ class BasicInterpreter {
 
     void read_instructions() {
         int label;
-        char instr[1000];
+        char instr[8];
+        char args[1000];
         std::vector<int> labels;
-        while (scanf("%d %[^\n]\n", &label, instr) != EOF) {
+        while (scanf("%d %s %[^\n]\n", &label, instr, args) != EOF) {
             labels.push_back(label);
-            _instrs[label] = strdup(instr);
+            _instrs[label] = std::make_pair(strdup(instr), strdup(args));
         }
         std::sort(labels.begin(), labels.end());
         int last = -1;
@@ -32,16 +33,15 @@ class BasicInterpreter {
     void loop() {
         _cur_instr = _next_instruction();
         while (_cur_instr >= 0) {
-            char instr[8], args[1000];
-            sscanf(_instrs[_cur_instr], "%s %[^\n]", instr, args);
-            if (strcmp(instr, "LET") == 0) {
-                _instr_LET(args);
-            } else if (strcmp(instr, "IF") == 0) {
-                _instr_IF(args);
-            } else if (strcmp(instr, "PRINT") == 0) {
-                _instr_PRINT(args);
+            std::pair<char *, char *> ins = _instrs[_cur_instr];
+            if (strcmp(ins.first, "LET") == 0) {
+                _instr_LET(ins.second);
+            } else if (strcmp(ins.first, "IF") == 0) {
+                _instr_IF(ins.second);
+            } else if (strcmp(ins.first, "PRINT") == 0) {
+                _instr_PRINT(ins.second);
             } else {
-                _instr_PRINTLN(args);
+                _instr_PRINTLN(ins.second);
             }
         }
     }
@@ -49,7 +49,7 @@ class BasicInterpreter {
   private:
     int _cur_instr;
     std::unordered_map<char, int32_t> _vars;
-    std::unordered_map<int, char *> _instrs;
+    std::unordered_map<int, std::pair<char *, char *> > _instrs;
     std::unordered_map<int, int> _label_chain;
 
     int32_t _get_var(const char *v) {
