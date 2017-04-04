@@ -1,3 +1,5 @@
+from math import log
+
 K = int(input())
 
 largest_pow = 1
@@ -8,18 +10,10 @@ constit_pows = set()
 div = largest_pow
 k = K
 while k > 0:
-    if div > k:
-        div //= 2
-    else:
+    if div <= k:
         constit_pows.add(div)
         k -= div
+    div //= 2
 
-breaks = 0
-pieces = set([largest_pow])
-while not constit_pows.issubset(pieces):
-    small = min(pieces)
-    pieces.add(small)
-    pieces.add(small//2)
-    breaks += 1
-
+breaks = int(log(largest_pow, 2) - log(min(constit_pows), 2))
 print(largest_pow, breaks)
