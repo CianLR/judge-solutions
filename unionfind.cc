@@ -1,19 +1,15 @@
 #include <stdio.h>
-
-#include <unordered_map>
+#include <vector>
 
 class UF {
  public:
+  UF(int N) : size(N, 1), parent(N, -1) {
+    for (int i = 0; i < N; ++i) parent[i] = i;
+  }
+
   int GetRoot(int a) {
-    if (parent.find(a) == parent.end()) {
-      parent[a] = -1;
-      size[a] = 1;
-      return a;
-    }
-    int prev = -2;
-    while (parent[a] != -1) {
-      parent[prev] = parent[a];
-      prev = a;
+    while (parent[a] != a) {
+      parent[a] = parent[parent[a]];
       a = parent[a];
     }
     return a;
@@ -36,19 +32,19 @@ class UF {
     }
   }
 
-  std::unordered_map<int, int> size;
-  std::unordered_map<int, int> parent;
+  std::vector<int> size;
+  std::vector<int> parent;
 };
 
 int main() {
   int N, Q;
-  UF uf;
-  scanf("%d %d", &N, &Q);
-  char *op = new char[2];
+  scanf("%d %d\n", &N, &Q);
+  UF uf(N);
+  char c;
   int a, b;
   while (Q--) {
-    scanf("%s %d %d", op, &a, &b);
-    if (*op == '?') {
+    scanf("%c %d %d\n", &c, &a, &b);
+    if (c == '?') {
       if (uf.Match(a, b))
         printf("yes\n");
       else
