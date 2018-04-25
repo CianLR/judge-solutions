@@ -9,23 +9,25 @@ using namespace std;
 
 typedef vector<vector<int>> AdjList;
 
-bool check_safe(int node, const AdjList &lst, const vector<int> &colours, int c) {
-  for (auto it = lst[node].begin(); it != lst[node].end(); ++it) {
-    if (colours[*it] == c)
-      return false;
+void find_safe(int node, const AdjList &lst, const vector<int> &colours, vector<bool> &is_safe) {
+  for (size_t i = 0; i < lst[node].size(); ++i) {
+    if (colours[lst[node][i]] != -1)
+      is_safe[colours[lst[node][i]]] = false;
   }
-  return true;
 }
 
 bool colour(int node, const AdjList &lst, int max_colours, vector<int> &colours) {
   if (node >= lst.size())
     return true;
+  vector<bool> is_safe(max_colours, true);
+  find_safe(node, lst, colours, is_safe);
   for (int c = 0; c < max_colours; ++c) {
+    if (!is_safe[c]) continue;
     colours[node] = c;
-    if (check_safe(node, lst, colours, c) && colour(node + 1, lst, max_colours, colours))
+    if (colour(node + 1, lst, max_colours, colours))
       return true;
-    colours[node] = -1;
   }
+  colours[node] = -1;
   return false;
 }
 
