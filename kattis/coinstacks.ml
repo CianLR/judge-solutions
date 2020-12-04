@@ -44,8 +44,8 @@ let rec is_winable stacks =
       |> decrement l1
       |> decrement l2
       |> is_winable' ((l1, l2) :: acc)
-    in
-    is_winable' [] stacks
+  in
+  is_winable' [] stacks
 
 let rec print_list = function
   | [] -> ()
