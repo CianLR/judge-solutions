@@ -1,0 +1,28 @@
+import sys
+
+
+def part1(lines):
+    return 0
+
+
+def part2(lines):
+    return 0
+
+
+def preprocess(lines):
+    return lines
+
+
+def main():
+    if len(sys.argv) < 2:
+        print(f"Usage: python3 {sys.argv[0]} <input_file>")
+        sys.exit(1)
+    with open(sys.argv[1], "r") as f:
+        lines = f.readlines()
+    lines = preprocess(lines)
+    print("Part 1:", part1(lines))
+    print("Part 2:", part2(lines))
+
+
+if __name__ == "__main__":
+    main()
