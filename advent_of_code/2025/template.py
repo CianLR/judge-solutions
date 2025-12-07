@@ -18,7 +18,7 @@ def main():
         print(f"Usage: python3 {sys.argv[0]} <input_file>")
         sys.exit(1)
     with open(sys.argv[1], "r") as f:
-        lines = f.readlines()
+        lines = f.read().splitlines()
     lines = preprocess(lines)
     print("Part 1:", part1(lines))
     print("Part 2:", part2(lines))
